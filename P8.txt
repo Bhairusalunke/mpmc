@@ -1,0 +1,26 @@
+#include <reg51.h>
+
+void T1M1Delay(void);
+
+void main(void)
+{
+    volatile unsigned char x;
+    P2 = 0x55;
+    TMOD = 0x10;
+    while (1)
+    {
+        P2 = (unsigned char)(~P2);
+        for (x = 0; x < 20; x++)
+            T1M1Delay();
+    }
+}
+
+void T1M1Delay(void)
+{
+    TH1 = 0x4C;
+    TL1 = 0x00;
+    TR1 = 1;
+    while (TF1 == 0);
+    TR1 = 0;
+    TF1 = 0;
+}
